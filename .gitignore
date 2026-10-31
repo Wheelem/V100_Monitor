@@ -1,0 +1,23 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+.venv/
+
+# Submodule
+v100_monitor_wheelem
+
+# PyQt compiled
+*.ui
+
+# Pytest
+__pycache__/
+
+# IDE files
+.vscode/
+
+# Images
+*.png
