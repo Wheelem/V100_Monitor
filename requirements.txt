@@ -1,0 +1,6 @@
+PyQt6==6.7.0
+pyqtgraph==0.14.0
+paramiko==3.4.0
+numpy==1.26.4
+# Optional: add a minimum Python version
+# python_requires>=3.9

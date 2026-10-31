@@ -1,0 +1,3 @@
+[submodule "v100_monitor_wheelem"]
+	path = v100_monitor_wheelem
+	url = https://github.com/Wheelem/V100_Monitor.git
