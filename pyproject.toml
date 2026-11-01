@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "v100-monitor"
+version = "1.0.0"
+description = "Light‑weight real‑time dashboard for NVIDIA Tesla V100 GPUs"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+dependencies = [
+    "PyQt6==6.7.0",
+    "pyqtgraph==0.14.0",
+    "paramiko==3.4.0",
+    "numpy==1.26.4",
+]
+
+[project.scripts]
+v100-monitor = "v100_monitor_V1_0:__main__"

@@ -1,5 +1,8 @@
 # V100 Monitor
 
+[![GitHub Actions Status](https://github.com/Wheelem/V100_Monitor/actions/workflows/ci.yml/badge.svg)](https://github.com/Wheelem/V100_Monitor/actions)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 The *V100 Monitor* is a lightweight, real‑time dashboard for an NVIDIA Tesla V100 GPU that runs on a remote host.  The application connects via SSH, runs a single `nvidia-smi` round‑trip per refresh, and visualises the following metrics:
 
 - **GPU utilisation (%)**
