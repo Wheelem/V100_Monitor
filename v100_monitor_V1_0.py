@@ -47,6 +47,15 @@ from PyQt6.QtCore import QThread, pyqtSignal, Qt, QSettings, QTimer, QEvent
 from PyQt6.QtGui import QColor
 import pyqtgraph as pg
 from PyQt6.QtWidgets import QTextEdit
+
+# --------------------------------------------------------------------------------
+# Import overview
+# --------------------------------------------------------------------------------
+# * PyQt6 widgets: GUI layout, buttons, tables, etc.
+# * PyQt6 core and GUI classes for event handling and styling.
+# * pyqtgraph: real‑time plotting of GPU metrics.
+# * paramiko: SSH client for remote command execution.
+# * numpy: optional smoothing of metric curves.
 import paramiko
 import numpy as np
 
@@ -122,21 +131,21 @@ if "--version" in sys.argv:
 
 
 class MonitorThread(QThread):
-    """Background thread that handles SSH communication.
+    """Background worker that talks to the remote host.
 
-    The thread connects to the remote host, retrieves a single ``nvidia-smi``
-    snapshot, and emits the parsed data via ``data_received``.  It also
-    implements exponential back‑off for transient connection failures.
+    The thread establishes an SSH session, runs a single ``nvidia-smi``
+    command, parses the output and emits the resulting dictionary via the
+    :py:data:`data_received` signal.  If the SSH connection fails it
+    backs off exponentially until a retry succeeds or the thread is stopped.
     """
     data_received = pyqtSignal(dict)
     error_occurred = pyqtSignal(str)
 
     def __init__(self, host, user, password, port, ssh_key, initial_refresh):
-        """Create the thread.
+        """Instantiate the worker.
 
-        Parameters are passed directly from the GUI.  ``port`` may be a
-        string, so we coerce it to ``int`` and fall back to the default
-        SSH port (22) on failure.
+        Parameters are supplied by the UI.  ``port`` can be a string; we
+        attempt to cast it to ``int`` and default to ``22`` if that fails.
         """
         super().__init__()
         self.host = host
@@ -151,21 +160,21 @@ class MonitorThread(QThread):
         self.running = True
 
     def _sleep(self, secs):
-        """Sleep for ``secs`` but wake early if the thread is stopped.
+        """Convenience wrapper around :py:func:`time.sleep`.
 
-        The 0.2 s granularity keeps the UI responsive without spamming the
-        kernel with syscalls.
+        It sleeps in 0.2 s increments so the thread can be cancelled
+        promptly while still keeping the UI responsive.
         """
         end = time.time() + secs
         while self.running and time.time() < end:
             time.sleep(0.2)
 
     def _connect(self):
-        """Create and return an authenticated SSH client.
+        """Return an authenticated :py:class:`paramiko.SSHClient`.
 
-        The host key policy automatically accepts new keys (useful for
-        first‑time connections).  If a private key path is provided, the
-        local agent is bypassed.
+        The client automatically accepts unknown host keys (suitable for a
+        private lab environment).  If a key file is supplied we skip the
+        SSH agent.
         """
         client = paramiko.SSHClient()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
