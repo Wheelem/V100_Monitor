@@ -33,6 +33,15 @@ The project is written in **Python 3** and relies on the following libraries:
 | Themes | Light and Dark themes that persist between sessions.
 | Export | Export the collected history to a CSV file or capture a PNG of all plots.
 
+## Theme preview
+
+The following screenshots show the light and dark themes applied to the
+monitor.  They are embedded directly from the repository so they render on
+GitHub’s rendered README page.
+
+![Light theme](Theme_Light.png)
+![Dark theme](Theme_Dark.png)
+
 ---
 
 ## Usage
