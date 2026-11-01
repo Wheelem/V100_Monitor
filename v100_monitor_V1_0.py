@@ -18,6 +18,11 @@
 # ---------------------------------------------------------------------------
 """V100 Monitor v1.0 – a remote GPU monitoring GUI.
 
+This module implements a lightweight GUI that polls a remote NVIDIA Tesla V100
+ via ``nvidia-smi`` over SSH and displays utilisation, VRAM, temperature and
+power consumption.  It is intended to be run as a standalone script but can
+also be imported as a module for further testing.
+
 Copyright (c) 2026 Odiun
 
 This project is licensed under the MIT license.  See the accompanying
@@ -45,6 +50,18 @@ from PyQt6.QtWidgets import QTextEdit
 import paramiko
 import numpy as np
 
+"""V100 Monitor v1.0 – a remote GPU monitoring GUI.
+
+This module implements a lightweight GUI that polls a remote NVIDIA Tesla V100
+via ``nvidia-smi`` over SSH and displays utilisation, VRAM, temperature and
+power consumption.  It is intended to be run as a standalone script but can
+also be imported as a module for further testing.
+
+Version: 1.0.0
+"""
+
+__version__ = "1.0.0"
+
 # --- Configuration & Constants -------------------------------------------------
 # Default time window (in seconds) displayed on the x‑axis of the live plots.
 DEFAULT_TIME_WINDOW = 60
@@ -52,7 +69,7 @@ DEFAULT_TIME_WINDOW = 60
 # Maximum VRAM reported by a V100; increased automatically if the card reports more.
 VRAM_DEFAULT_MAX_MB = 16384
 
-# Power limit (W) for a V100; keeps a safety margin beyond the 250 W TDP.
+# Power limit (W) for a V100; keeps a safety margin beyond the 250 W TDP.
 POWER_MAX_W = 300
 
 # Temperature limits used for visual warnings.
@@ -93,17 +110,14 @@ THEMES = {
     ),
     'dark': dict(
         window='#121212', text='#e0e0e0', input_bg='#1e1e1e', border='#4a4a4a',
-    __version__ = "1.0.0"
-
-
         grid='#3c3c3c', header_bg='#2a2a2a', plot_bg='#181818', minimap_bg='#161616',
         minimap_line='#aaaaaa', grid_alpha=0.5, title_fg='#e0e0e0',
     ),
 }
 
-    if "--version" in sys.argv:
-        print(__version__)
-        sys.exit(0)
+if "--version" in sys.argv:
+    print(__version__)
+    sys.exit(0)
 
 
 
@@ -581,24 +595,7 @@ class MainWindow(QMainWindow):
             QTableWidget{{ color: {t['text']}; background-color: {t['input_bg']}; gridline-color: {t['grid']}; }}
             QTextEdit   {{ color: {t['text']}; background-color: {t['input_bg']}; border: 1px solid {t['border']}; font-family: 'Courier New', monospace; font-size: 10pt; }}
             QHeaderView::section {{ background-color: {t['header_bg']}; color: {t['text']}; border: 1px solid {t['border']}; }}
-        """V100 Monitor
-        =================
-
-        This module implements a lightweight GUI that polls a remote NVIDIA Tesla V100
-        via ``nvidia‑smi`` over SSH and displays utilisation, VRAM, temperature and
-        power consumption.  It is intended to be run as a standalone script but can
-        also be imported as a module for further testing.
-
-        Version: ``__version__``
-        -----------------------
-        Use ``python v100_monitor_V1_0.py --version`` to print the current
-        release.
-        """
-
-        # Copyright (c) 2026, The V100 Monitor Authors
-        #
-        # SPDX-License-Identifier: MIT
-        __version__ = "1.0.0"
+        """)
         for i, pw in enumerate(self.plot_widgets):
             pw.setBackground(t['plot_bg'])
             ax = pw.getPlotItem().getAxis('bottom')
